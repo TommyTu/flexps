@@ -29,6 +29,7 @@ void CachedBlocker::AddResponse(uint32_t app_thread_id, uint32_t model_id, Messa
       recv_finish =
           tracker_[app_thread_id][model_id].first == tracker_[app_thread_id][model_id].second + 1 ? true : false;
     }
+    UpdateProcessCache(msg, model_id);
     recv_handle_[app_thread_id][model_id](msg);
     if (recv_finish) {
       recv_finish_handle_[app_thread_id][model_id]();
@@ -49,8 +50,9 @@ void CachedBlocker::AddResponse(uint32_t app_thread_id, uint32_t model_id, Messa
       recv_finish =
           tracker_[app_thread_id][model_id].first == tracker_[app_thread_id][model_id].second + 1 ? true : false;
     }
+    UpdateProcessCache(msg, model_id);
     recv_handle_[app_thread_id][model_id](msg);
-    UpdateProcessCache(msg);
+    
     if (recv_finish) {
       recv_finish_handle_[app_thread_id][model_id]();
     }
